@@ -19,7 +19,7 @@
     * [获取用户主目录](/homedir.md)
   * [协程池管理](/gpool.md)
   * [分布式锁](/nx.md)
-  * [daemon](/daemon.md)
+  * [守护进程管理](/daemon.md)
 
 
 * [数据处理](/database.md)
