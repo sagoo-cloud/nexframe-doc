@@ -26,7 +26,7 @@ go get github.com/sagoo-cloud/nexframe
 首先，需要创建一个 `FileHandler` 实例来处理文件上传和水印功能。
 
 ```go
-import "github.com/sagoo-cloud/nexframe/file"
+import "github.com/sagoo-cloud/nexframe/os/file"
 
 config := file.UploadConfig{
     Dir:        "/path/to/upload/directory",
@@ -139,7 +139,7 @@ package main
 import (
     "fmt"
     "net/http"
-    "github.com/sagoo-cloud/nexframe/file"
+    "github.com/sagoo-cloud/nexframe/os/file"
 )
 
 func main() {

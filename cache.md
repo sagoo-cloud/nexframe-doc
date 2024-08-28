@@ -9,7 +9,7 @@ Cache 包是一个高性能的缓存解决方案，结合了内存缓存和 Redi
 确保你的项目中已经导入了 Cache 包：
 
 ```go
-import "github.com/sagoo-cloud/nexframe/cache"
+import "github.com/sagoo-cloud/nexframe/os/cache"
 ```
 
 ## 3. 配置

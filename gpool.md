@@ -17,7 +17,7 @@ GPool 是一个高效的 Go 语言协程池实现，旨在管理和重用 gorout
 在你的 Go 项目中使用以下命令安装 GPool：
 
 ```bash
-go get github.com/your-username/gpool
+go get github.com/sagoo-cloud/nexframe
 ```
 
 ## 4. 基本用法
@@ -25,7 +25,7 @@ go get github.com/your-username/gpool
 ### 4.1 创建 GPool
 
 ```go
-import "github.com/your-username/gpool"
+import "github.com/sagoo-cloud/nexframe/os/gpool"
 
 // 创建一个容量为 10 的协程池
 pool := gpool.NewGPool(10)
@@ -144,7 +144,7 @@ import (
     "math/rand"
     "time"
 
-    "github.com/your-username/gpool"
+    "github.com/sagoo-cloud/nexframe/os/gpool"
 )
 
 func main() {

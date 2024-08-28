@@ -26,7 +26,7 @@ go get github.com/sagoo-cloud/nexframe
 在使用本包之前，建议先进行初始化：
 
 ```go
-import "github.com/sagoo-cloud/nexframe/file"
+import "github.com/sagoo-cloud/nexframe/os/file"
 
 func main() {
     file.InitFileSystem()
@@ -218,7 +218,7 @@ package main
 import (
     "fmt"
     "log"
-    "github.com/sagoo-cloud/nexframe/file"
+    "github.com/sagoo-cloud/nexframe/os/file"
 )
 
 func main() {
