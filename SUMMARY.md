@@ -5,6 +5,16 @@
 * [介绍](README.md)
 * [准备工作](install.md)
 * [快速开始](start.md)
+* [web服务开发](/web.md)
+  * [api定义](/web/api.md)
+  * [控制器实现](/web/controller.md)
+  * [服务实现](/web/logic.md)
+  * [中间件设置](/web/middleware.md)
+  * [路由设置](/web/route.md)
+  * [开始web服务](/web/start.md)
+* [微服务开发](/microservices.md)
+  * [构建服务](/weaver.md)
+  * [web服务中引用微服务](/web/weaver.md)
 * [服务组件](servers.md)
   * [消息队列服务](/queue.md)
   * [定时器服务](/timers.md)
@@ -20,8 +30,7 @@
   * [协程池管理](/gpool.md)
   * [分布式锁](/nx.md)
   * [守护进程管理](/daemon.md)
-
-
+  * 
 * [数据处理](/database.md)
   * [数据库组件](/gorm.md)
   * [redisdb组件](/redisdb.md)
@@ -33,6 +42,7 @@
   * [速率限制](/retelimit.md)
 * [配置管理](/config.md)
 * [i18n国际化](/i18n.md)
+* [服务观测](/monitor.md)
 
 <!--分割线-->
 ---
