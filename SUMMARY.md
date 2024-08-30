@@ -11,6 +11,7 @@
   * [服务实现](/web/logic.md)
   * [中间件设置](/web/middleware.md)
   * [路由设置](/web/route.md)
+  * [跨域设置](/web/cors.md)
   * [开始web服务](/web/start.md)
 * [微服务开发](/microservices.md)
   * [构建服务](/weaver.md)
