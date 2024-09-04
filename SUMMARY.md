@@ -31,6 +31,7 @@
   * [协程池管理](/gpool.md)
   * [分布式锁](/nx.md)
   * [守护进程管理](/daemon.md)
+  * [通用的变量类型](/gvar.md)
   * 
 * [数据处理](/database.md)
   * [数据库组件](/gorm.md)
