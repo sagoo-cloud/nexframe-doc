@@ -19,7 +19,7 @@ go mod init github.com/yourname/yourproject
 
 ```azure
 
-go get github.com/nexframe/nexframe
+go get github.com/sagoo-cloud/nexframe
 
 ```
 ## 编写代码

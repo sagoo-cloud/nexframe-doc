@@ -13,6 +13,7 @@
   * [路由设置](/web/route.md)
   * [跨域设置](/web/cors.md)
   * [开始web服务](/web/start.md)
+  * [web服务自定义状态码](/web/status.md)
 * [微服务开发](/microservices.md)
   * [构建服务](/weaver.md)
   * [web服务中引用微服务](/web/weaver.md)
