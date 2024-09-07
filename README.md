@@ -6,7 +6,7 @@ NexFrame是一款基于 Go 语言免费开源的，快速、简单的企业级�
 
 包含清晰简单的API定义，简单的微服务添加。
 
-![架构图](img/nexframe.png)
+![架构图](/img/nexframe.png)
 
 ## NexFrame开发背景
 
