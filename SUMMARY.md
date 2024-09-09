@@ -11,6 +11,7 @@
     * [鉴权](web/auth.md)
     * [请求体限制](web/middleware-body-limit.md)
     * [session认证](web/session.md)
+    * [secure安全增强组件](web/middleware-secure.md)
   * [路由设置](web/lu-you-she-zhi.md)
   * [跨域设置](web/cors.md)
   * [开始web服务](web/start.md)
