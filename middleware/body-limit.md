@@ -27,7 +27,7 @@ package main
 import (
     "net/http"
     "github.com/gorilla/mux"
-    "github.com/sagoo-cloud/nexframe/nf/middleware"
+    "github.com/sagoo-cloud/nexframe/middleware"
 )
 
 func main() {
