@@ -1,179 +1,165 @@
-# JWT 中间件使用手册
+# JWT认证中间件开发指导手册
 
 ## 1. 简介
 
-JWT（JSON Web Token）中间件是一个用于 Go 语言的认证中间件，专门设计用于与 gorilla/mux 路由器配合使用。它提供了一种简单而安全的方法来实现基于令牌的身份验证。
+这个JWT（JSON Web Token）认证中间件是为Go语言web应用程序设计的。它提供了一种简单而安全的方式来实现用户认证。本指南将帮助您了解如何在您的项目中集成和使用这个中间件。
 
-主要特性：
-- 支持从不同来源提取令牌（头部、查询参数、cookie）
-- 可自定义令牌验证逻辑
-- 灵活的错误处理
-- 易于与现有 gorilla/mux 应用程序集成
+## 2. 主要功能
 
-## 2. 安装
+- JWT令牌的生成和解析
+- 灵活的令牌提取方式（请求头、URL参数、Cookie）
+- 可自定义的错误处理
+- 与gorilla/mux兼容的中间件
 
-要使用 JWT 中间件，首先需要安装它。在您的项目目录中运行以下命令：
+## 3. 安装
+
+首先，确保您的项目中已经安装了必要的依赖：
 
 ```bash
-go get github.com/sagoo-cloud/nexframe
+go get -u github.com/golang-jwt/jwt/v5
 ```
 
-然后在您的 Go 文件中导入它：
+然后，将`jwt.go`文件复制到您项目的`auth`包中。
+
+## 4. 基本使用
+
+### 4.1 创建中间件实例
 
 ```go
-import "github.com/sagoo-cloud/nexframe/auth"
-
-```
-
-## 3. 基本使用
-
-以下是一个基本的使用示例：
-
-```go
-package main
-
 import (
-    "github.com/gorilla/mux"
     "github.com/sagoo-cloud/nexframe/auth"
-    "net/http"
+    "github.com/golang-jwt/jwt/v5"
 )
 
-var secretKey = []byte("your-secret-key")
-
 func main() {
-    r := mux.NewRouter()
+    // 创建JWT配置
+    jwtConfig := auth.JwtConfig{
+        SigningKey:    []byte("your-secret-key"),
+        TokenLookup:   "header:Authorization",
+        SigningMethod: "HS256",
+    }
 
-    // 创建 JWT 中间件
-    jwtMiddleware, err := auth.New(auth.JwtConfig{
-        SigningKey: secretKey,
-    })
+    // 创建中间件实例
+    jwtMiddleware, err := auth.New(jwtConfig)
     if err != nil {
-        panic(err)
+        // 处理错误
     }
 
-    // 应用中间件到需要保护的路由
-    api := r.PathPrefix("/api").Subrouter()
-    api.Use(jwtMiddleware.Middleware)
-
-    // 设置路由
-    api.HandleFunc("/protected", protectedHandler).Methods("GET")
-    r.HandleFunc("/login", loginHandler).Methods("POST")
-
-    http.ListenAndServe(":8080", r)
-}
-
-func protectedHandler(w http.ResponseWriter, r *http.Request) {
-    // 从上下文中获取令牌声明
-    claims := r.Context().Value("user").(*auth.TokenClaims)
-    w.Write([]byte("Welcome, " + claims.Username))
-}
-
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-    // 这里应该有用户认证逻辑
-    claims := auth.TokenClaims{
-        Username: "example_user",
-    }
-    auth.CreateAndSendToken(w, claims, secretKey, 24*time.Hour)
+    // ... 配置您的路由器
+    router.Use(jwtMiddleware.Middleware)
 }
 ```
 
-## 4. 配置选项
-
-JWT 中间件提供了多个配置选项，可以在创建中间件实例时设置：
+### 4.2 生成令牌
 
 ```go
-jwtMiddleware, err := auth.New(auth.JwtConfig{
-    SigningKey:    []byte("your-secret-key"),
-    SigningMethod: "HS256",
-    TokenLookup:   "header:Authorization",
-    ContextKey:    "user",
-    ErrorHandler:  customErrorHandler,
-})
+claims := &auth.TokenClaims{
+    Username: "example_user",
+    RegisteredClaims: jwt.RegisteredClaims{
+        ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+    },
+}
+
+token, err := auth.GenerateToken("your-secret-key", auth.WithClaims(func() jwt.Claims { return claims }))
+if err != nil {
+    // 处理错误
+}
 ```
 
-- `SigningKey`：用于签名和验证令牌的密钥（必需）
-- `SigningMethod`：令牌签名方法（默认为 "HS256"）
-- `TokenLookup`：定义如何查找令牌（默认为 "header:Authorization"）
-- `ContextKey`：用于在请求上下文中存储令牌声明的键（默认为 "user"）
-- `ErrorHandler`：自定义错误处理函数
+### 4.3 解析令牌
 
-## 5. 高级用法
+```go
+func someProtectedHandler(w http.ResponseWriter, r *http.Request) {
+    claims, ok := auth.FromContext(r.Context())
+    if !ok {
+        http.Error(w, "Unauthorized", http.StatusUnauthorized)
+        return
+    }
 
-### 5.1 自定义令牌提取
+    // 使用claims中的信息...
+    username := claims.(*auth.TokenClaims).Username
+    // ...
+}
+```
+
+## 5. 高级配置
+
+### 5.1 自定义令牌查找方式
 
 您可以自定义从请求中提取令牌的方式：
 
 ```go
-jwtMiddleware, _ := auth.New(auth.JwtConfig{
-    SigningKey:  secretKey,
-    TokenLookup: "cookie:jwt",
-})
-```
-
-这将从名为 "jwt" 的 cookie 中提取令牌。
-
-### 5.2 自定义声明
-
-您可以扩展 `TokenClaims` 结构体以包含额外的自定义字段：
-
-```go
-type CustomClaims struct {
-    auth.TokenClaims
-    UserID int `json:"user_id"`
-}
-
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-    claims := CustomClaims{
-        TokenClaims: auth.TokenClaims{Username: "example_user"},
-        UserID:      123,
-    }
-    auth.CreateAndSendToken(w, claims, secretKey, 24*time.Hour)
+jwtConfig := auth.JwtConfig{
+    // ...
+    TokenLookup: "header:X-API-Key",  // 从自定义头中提取
+    // 或
+    TokenLookup: "query:token",       // 从URL参数中提取
+    // 或
+    TokenLookup: "cookie:jwt",        // 从Cookie中提取
 }
 ```
 
-## 6. 错误处理
-
-您可以提供自定义的错误处理函数：
+### 5.2 自定义错误处理
 
 ```go
-func customErrorHandler(w http.ResponseWriter, r *http.Request, err error) {
-    http.Error(w, "认证失败: "+err.Error(), http.StatusUnauthorized)
-}
-
-jwtMiddleware, _ := auth.New(auth.JwtConfig{
-    SigningKey:   secretKey,
-    ErrorHandler: customErrorHandler,
-})
-```
-
-## 7. 最佳实践
-
-1. 始终使用强密钥并保持其安全性。
-2. 在生产环境中使用 HTTPS 来保护令牌传输。
-3. 设置合理的令牌过期时间。
-4. 定期轮换密钥。
-5. 在令牌中只包含必要的信息。
-
-## 8. 常见问题解答
-
-Q: 如何处理令牌过期？
-A: 令牌过期会自动由中间件处理。您可以在创建令牌时设置过期时间：
-```go
-auth.CreateAndSendToken(w, claims, secretKey, 1*time.Hour) // 令牌将在1小时后过期
-```
-
-Q: 如何在受保护的路由中访问令牌中的信息？
-A: 使用 `r.Context().Value("user")` 来获取令牌声明：
-```go
-func protectedHandler(w http.ResponseWriter, r *http.Request) {
-    claims := r.Context().Value("user").(*auth.TokenClaims)
-    // 使用 claims.Username 等
+jwtConfig := auth.JwtConfig{
+    // ...
+    ErrHandler: func(w http.ResponseWriter, r *http.Request, err error) {
+        // 自定义错误响应
+        http.Error(w, "Authentication failed: "+err.Error(), http.StatusUnauthorized)
+    },
 }
 ```
 
-Q: 可以同时从多个来源提取令牌吗？
-A: 目前不支持同时从多个来源提取令牌。但您可以根据需要修改 `TokenLookup` 配置。
+### 5.3 使用不同的签名方法
 
----
+```go
+jwtConfig := auth.JwtConfig{
+    // ...
+    SigningMethod: "RS256",
+    SigningKey: rsaPublicKey,  // 对于RS256，这里应该是rsa.PublicKey
+}
 
-如果您有任何其他问题或需要进一步的帮助，请随时查阅源代码或联系维护者。
+// 生成令牌时
+token, err := auth.GenerateToken("", 
+    auth.WithSigningMethod(jwt.SigningMethodRS256),
+    auth.WithKeyFunc(func(token *jwt.Token) (interface{}, error) {
+        return rsaPrivateKey, nil
+    }),
+)
+```
+
+## 6. 最佳实践
+
+1. **安全性**：
+    - 使用足够长且复杂的密钥
+    - 定期轮换密钥
+    - 在生产环境中使用HTTPS
+
+2. **性能**：
+    - 合理设置令牌的过期时间
+    - 考虑实现令牌刷新机制
+
+3. **错误处理**：
+    - 提供有意义的错误消息，但不要泄露敏感信息
+    - 记录认证失败的日志，但要注意不要记录敏感数据
+
+4. **声明使用**：
+    - 只在令牌中包含必要的信息
+    - 对于敏感信息，考虑使用引用而不是直接包含
+
+## 7. 故障排除
+
+1. "缺少认证头"错误：确保客户端正确设置了Authorization头。
+
+2. "无效的认证头"错误：检查令牌格式，确保使用了"Bearer "前缀。
+
+3. 令牌解析失败：检查签名方法和密钥是否匹配。
+
+4. 令牌过期：检查令牌的过期时间设置，考虑实现刷新机制。
+
+## 8. 结语
+
+这个JWT中间件提供了一个灵活且安全的方式来为您的Go web应用程序添加认证功能。通过遵循本指南，您应该能够轻松地集成和使用这个中间件。如果遇到任何问题，请查阅源代码或寻求进一步的帮助。
+
+记住，安全性是一个持续的过程。定期审查和更新您的认证策略是很重要的。
