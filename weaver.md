@@ -43,6 +43,14 @@ sum, err := adder.Add(ctx, 1, 2)
 
 ```
 
+注意：weaver服务编写完，要生成中间代码，可以通过这个方式进行生成：
+
+```go
+
+//go:generate weaver generate ./...
+
+```
+
 第3步：部署服务
 在本地测试您的应用程序并将其部署到云端。 Service Weaver 让您可以思考代码的用途，而不必担心它在哪里运行。
 ```shell

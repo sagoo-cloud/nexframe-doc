@@ -21,6 +21,7 @@
 * [微服务开发](microservices.md)
   * [构建服务](weaver.md)
   * [web服务中引用微服务](web/weaver.md)
+  * [微服务间通信](microservices/serialize.md)
 * [服务组件](servers.md)
   * [消息队列服务](queue.md)
   * [定时器服务](timers.md)

@@ -22,6 +22,36 @@ go mod init github.com/yourname/yourproject
 go get github.com/sagoo-cloud/nexframe
 
 ```
+## 工程目录建议
+
+
+```shell
+
+├── cmd
+│   ├── gen # 生
+├── config # 配置文件
+│       ├── config.example.toml
+│       ├── config.toml
+│       └── lang
+│           ├── en.json
+│           └── zh.json
+├── consts # 常量
+├── frontend # 前端
+│       ├── api # 前端API
+│       ├── controller # 前端控制器
+│       ├── frontend.go # 前端入口
+│       ├── logic # 前端逻辑
+│       └── service # 前端服务封装
+├── main.go
+├── model # 数据库模型，GORM的dao生成也在这个目录
+├── pkg # 公共包
+├── readme.md
+├── resource # 资源文件
+└── serever # 各微服务
+
+
+```
+
 ## 编写代码
 在项目目录下，创建一个main.go文件，并编写如下代码
 
