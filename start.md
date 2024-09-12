@@ -29,7 +29,7 @@ go get github.com/sagoo-cloud/nexframe
 ```shell
 
 ├── cmd
-│   ├── gen # 生
+│       ├── gen # 生
 ├── config # 配置文件
 │       ├── config.example.toml
 │       ├── config.toml
