@@ -22,8 +22,9 @@ go mod init github.com/yourname/yourproject
 go get github.com/sagoo-cloud/nexframe
 
 ```
-## 工程目录建议
+## 工程目录
 
+以下是建议的工程目录，可跟据实际情况自行定义。
 
 ```shell
 
