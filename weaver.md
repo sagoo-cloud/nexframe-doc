@@ -16,7 +16,7 @@ Google开源的Service Weaver本就是为解决微服务架构在实践中出现
 
 实现weaver微服务只需要三步：
 
-第1步：编写服务程序
+## 第1步：编写服务程序
 
 跟据人业务逻辑编写服务程序，如：
 ```go
@@ -34,7 +34,7 @@ func (adder) Add(_ context.Context, x, y int) (int, error) {
 
 ```
 
-第2步：调用你的服务
+## 第2步：调用你的服务
 使用常规 Go 方法调用来调用您的组件。无需 RPC 或 HTTP 请求。忘记版本控制问题。类型系统保证组件是兼容的。
 
 ```go
@@ -51,7 +51,7 @@ sum, err := adder.Add(ctx, 1, 2)
 
 ```
 
-第3步：部署服务
+## 第3步：部署服务
 在本地测试您的应用程序并将其部署到云端。 Service Weaver 让您可以思考代码的用途，而不必担心它在哪里运行。
 ```shell
 $ go test .                       # Test locally.
