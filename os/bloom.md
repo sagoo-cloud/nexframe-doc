@@ -131,7 +131,7 @@ bf, err := bloom.New(bloom.WithTimeout(5 * time.Second))
 ```go
 import (
 	"github.com/spaolacci/murmur3"
-	"github.com/your-username/bloom-filter"
+	"github.com/sagoo-cloud/nexframe/os/bloom"
 )
 
 func murmurHash(s string) uint64 {
