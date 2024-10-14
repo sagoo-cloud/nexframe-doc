@@ -27,3 +27,23 @@ func (c *cBookController) GetBookById(ctx context.Context, req *api.GetBookByIdR
 
 
 ```
+
+## 自定义响应头部信息
+
+在你的控制器方法中，你可以返回一个ResponseWithHeaders对象来设置自定义头部，例如：
+    
+```go
+
+func (c *YourController) YourMethod(ctx context.Context, req *YourRequest) (res interface{}, error) {
+    // ... 你的业务逻辑 ...
+    
+    return contracts.ResponseWithHeaders{
+        Headers: map[string]string{
+            "X-Custom-Header": "Some Value",
+            "X-Another-Header": "Another Value",
+        },
+        Data: yourResponseData,
+    }, nil
+}
+
+```

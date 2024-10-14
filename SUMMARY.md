@@ -38,6 +38,7 @@
   * [分布式锁](nx.md)
   * [守护进程管理](daemon.md)
   * [通用的变量类型](gvar.md)
+  * [布隆过滤器](os/bloom.md)
 * [鉴权相关](auth.md)
   * [JWT鉴权](auth-jwt.md)
   * [AK/SK鉴权](auth-aksk.md)
